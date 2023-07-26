@@ -1,5 +1,6 @@
 const rateLimit = require("express-rate-limit");
 const MongoStore = require("rate-limit-mongo");
+const ms = require("ms");
 const { env } = require("../config/env");
 
 const rateLimiter = (windowMs = 1 * 60 * 1000, max) => {
@@ -10,11 +11,13 @@ const rateLimiter = (windowMs = 1 * 60 * 1000, max) => {
       expireTimeMs: windowMs,
       errorHandler: console.error.bind(null, "rate-limit-mongo"),
     }),
-    windowMs, //1 minute
+    windowMs, //1 minute default
     max,
     standardHeaders: true,
     legacyHeaders: false,
-    message: `Too many requrests from this IP, please try again later`,
+    message: `Too many requrests from this IP, please try again after ${ms(
+      windowMs
+    )}`,
     handler: (req, res, next, option) => {
       res.status(option.statusCode).json({
         success: false,
