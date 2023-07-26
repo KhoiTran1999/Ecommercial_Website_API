@@ -4,16 +4,34 @@ const authorize = require("../middleware/authorize");
 const router = express.Router();
 const validator = require("../middleware/validator");
 const { productSchema } = require("../validation/productSchema");
-const productController = require("../controllers/productController")
+const productController = require("../controllers/productController");
+const upload = require("../middleware/upload");
 
-router.post("/", jwtAuth, authorize("owner"), validator(productSchema), productController.addProduct)
+router.post(
+  "/",
+  jwtAuth,
+  authorize("owner"),
+  upload,
+  validator(productSchema),
+  productController.addProduct
+);
 
-router.get("/", productController.getProduct)
+router.get("/", productController.getProduct);
 
-router.get("/:id", productController.getProductById)
+router.get("/:id", productController.getProductById);
 
-router.delete("/:id", jwtAuth, authorize("owner"), productController.deleteProduct)
+router.delete(
+  "/:id",
+  jwtAuth,
+  authorize("owner"),
+  productController.deleteProduct
+);
 
-router.patch("/:id", jwtAuth, authorize("owner"), productController.updateProduct)
+router.patch(
+  "/:id",
+  jwtAuth,
+  authorize("owner"),
+  productController.updateProduct
+);
 
-module.exports = router
+module.exports = router;

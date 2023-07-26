@@ -1,17 +1,26 @@
 const asyncMiddleware = require("../middleware/asyncMiddleware");
-const Category = require("../models/Category");
-const Product = require("../models/Product");
+const Category = require("../models/Mysql/Category");
+const Product = require("../models/Mysql/Product");
 const ErrorResponse = require("../responses/errorResponse");
 
 const addProduct = asyncMiddleware(async (req, res, next) => {
   const { name, description, price, quantity, categoryId } = req.body;
+  const filename = req.file?.filename;
   const { id: userId } = req.user;
+  const fileSize = req.file?.size;
+  const maxFileSize = 15 * 1024 * 1024; //5Mb
+
+  if (req.file && fileSize > maxFileSize) {
+    throw new ErrorResponse(422, "File Size exceeds litmit");
+  }
+
   await Product.create({
     name,
     description,
     price,
     quantity,
     categoryId,
+    photo: filename,
     userId,
   });
 

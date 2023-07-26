@@ -1,6 +1,6 @@
 const asyncMiddleware = require("../middleware/asyncMiddleware");
-const Address = require("../models/Address");
-const User = require("../models/User");
+const Address = require("../models/Mysql/Address");
+const User = require("../models/Mysql/User");
 
 const updateAddress = asyncMiddleware(async (req, res, next) => {
   const { city = null, province = null, address = null, zip = null } = req.body;
@@ -21,7 +21,7 @@ const getMe = asyncMiddleware(async (req, res, next) => {
     attributes: {
       exclude: ["password"],
     },
-    include: [Address]
+    include: [Address],
   });
   res.status(200).json({
     success: true,

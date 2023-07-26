@@ -8,5 +8,4 @@ const productSchema = Joi.object({
     categoryId: Joi.number().required()
 })
 
-
 module.exports = {productSchema}
