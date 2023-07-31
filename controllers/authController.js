@@ -75,7 +75,13 @@ const verifiedEmail = asyncMiddleware(async (req, res, next) => {
   EmailService.sendMail({
     to: user.email,
     subject: "OTP code",
-    text: `Your otp is ${otp}`,
+    html: `<h2>Hi ${user.username},</h2>
+<p>You recently requested to verify your email for your <strong>${user.username}</strong> account. <br>Copy OTP code and paste it in our website to verify your email. <strong>This OTP code is only valid for the next 20 seconds.</strong></p>
+<div style= "display: flex; justify-content: center; margin: 10px">
+    <span style="background-color: rgb(34,188,102); color: white; font-size: 30px; padding: 4px; border-radius: 2px">${otp}</span>
+</div>
+<p>Thanks,
+  <br>The Ecommercial Website Team</p>`,
   });
 
   res.status(201).json({
@@ -157,7 +163,15 @@ const forgotPassword = asyncMiddleware(async (req, res, next) => {
     to: user.email,
     subject: "Forgot password",
     text: "Your token exists only 2 minutes",
-    html: `<h1></h1><a href="http://localhost:3000/forgot-password/${token}">Click here to reset password</a>`,
+    html: `
+    <h2>Hi ${user.username},</h2>
+<p>You recently requested to reset your password for your <strong>${user.username}</strong> account. <br>Click the button below to reset your password. <strong>This Token is only valid for the next 2 minutes.</strong></p>
+<div style= "display: flex; justify-content: center; margin: 10px">
+    <a href="http://localhost:3000/forgot-password/${token}" style="background-color: rgb(34,188,102); color: white; font-size: 30px; padding: 4px; border-radius: 2px">Click here</a>
+</div>
+<p>Thanks,
+  <br>The Ecommercial Website Team</p>
+    `,
   });
 
   res.status(201).json({

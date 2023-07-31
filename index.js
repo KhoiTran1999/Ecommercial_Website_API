@@ -31,7 +31,7 @@ app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 
 //Auth API
-app.use("/auth", rateLimiter(10 * 1000, 1), authRouter);
+app.use("/auth", authRouter);
 
 //Role API
 app.use("/role", jwtAuth, roleRouter);
